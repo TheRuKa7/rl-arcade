@@ -1,0 +1,18 @@
+services:
+  rl-arcade:
+    build: .
+    image: rl-arcade:local
+    volumes:
+      - ./runs:/app/runs
+      - ./artefacts:/app/artefacts
+    environment:
+      - RL_ARCADE_RUNS_DIR=/app/runs
+      - RL_ARCADE_WANDB_MODE=offline
+
+  tensorboard:
+    image: tensorflow/tensorflow:latest
+    command: tensorboard --logdir=/logs --host 0.0.0.0 --port 6006
+    ports:
+      - "6006:6006"
+    volumes:
+      - ./runs:/logs

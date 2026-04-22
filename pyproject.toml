@@ -1,0 +1,82 @@
+[project]
+name = "rl-arcade"
+version = "0.1.0"
+description = "Deep RL lab for game-playing agents (PPO / DQN / SAC + Gymnasium + ONNX export)."
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+authors = [{ name = "Rushil Kaul" }]
+keywords = ["reinforcement-learning", "ppo", "dqn", "sac", "gymnasium", "atari", "onnx"]
+
+dependencies = [
+  "gymnasium>=1.0,<2.0",
+  "numpy>=2.1,<3.0",
+  "torch>=2.5,<3.0",
+  "typer>=0.12,<1.0",
+  "pydantic>=2.8,<3.0",
+  "pydantic-settings>=2.4,<3.0",
+  "rich>=13.7",
+  "tensorboard>=2.17",
+  "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+atari = [
+  "ale-py>=0.10,<0.11",
+  "opencv-python-headless>=4.10",
+]
+mujoco = [
+  "mujoco>=3.2",
+]
+multi-agent = [
+  "pettingzoo>=1.24",
+]
+wandb = [
+  "wandb>=0.18",
+]
+onnx = [
+  "onnx>=1.17",
+  "onnxruntime>=1.20",
+]
+serve = [
+  "fastapi>=0.115",
+  "uvicorn[standard]>=0.32",
+]
+dev = [
+  "ruff>=0.8",
+  "mypy>=1.11",
+  "pytest>=8.3",
+  "pytest-cov>=5.0",
+  "types-tqdm",
+]
+
+[project.scripts]
+rl-arcade = "rl_arcade.__main__:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rl_arcade"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+mypy_path = "src"
+explicit_package_bases = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
